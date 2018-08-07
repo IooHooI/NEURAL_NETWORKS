@@ -3,4 +3,4 @@ language: python
 python: 3.6
 
 script:
-  - ./create_env.sh
+  - create_env.sh
