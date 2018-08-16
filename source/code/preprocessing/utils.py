@@ -1,6 +1,6 @@
 from sklearn.pipeline import Pipeline
-from source.code.ItemSelector import ItemSelector
-from source.code.MyLabelBinarizer import MyLabelBinarizer
+from source.code.preprocessing.itemsselector import ItemSelector
+from source.code.preprocessing.mylabelbinarizer import MyLabelBinarizer
 
 
 def generate_features_names(bin_features, cat_features, num_features):

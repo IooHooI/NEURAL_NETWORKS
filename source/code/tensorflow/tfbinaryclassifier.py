@@ -5,12 +5,8 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 
 
 class TfBinaryClassifier(BaseEstimator, ClassifierMixin):
-    """An example of classifier"""
 
     def __init__(self, checkpoint_dir='./', learning_rate=0.01, batch_size=128, n_epochs=30):
-        """
-        Called when initializing the classifier
-        """
         tf.logging.set_verbosity(tf.logging.ERROR)
 
         self.saver = None
@@ -24,16 +20,12 @@ class TfBinaryClassifier(BaseEstimator, ClassifierMixin):
         batch_count = int(math.ceil(len(X) / self.batch_size))
         # Step 1.1: Generate the next batch
         for curr in range(batch_count):
-            left_boundary = curr
-            right_boundary = curr + min(self.batch_size, len(X) - curr * self.batch_size)
-            yield X[left_boundary: right_boundary, :], y[left_boundary: right_boundary]
+            batch_beginning = curr
+            batch_end = curr + min(self.batch_size, len(X) - curr * self.batch_size)
+            yield X[batch_beginning: batch_end, :], y[batch_beginning: batch_end]
 
-    def _model(self, input_shape, output_shape):
+    def __model(self, input_shape, output_shape):
         # Step 2: create placeholders for features and labels
-        # each image in the MNIST data is of shape 28*28 = 784
-        # therefore, each image is represented with a 1x784 tensor
-        # there are 10 classes for each image, corresponding to digits 0 - 9.
-        # each lable is one hot vector.
         self.inputs = tf.placeholder(name='passenger', dtype=tf.float32, shape=[None, input_shape])
         self.labels = tf.placeholder(name='survived', dtype=tf.float32, shape=[None, output_shape])
 
@@ -49,7 +41,7 @@ class TfBinaryClassifier(BaseEstimator, ClassifierMixin):
 
         # Step 4: build model
         # the model that returns the logits.
-        # this logits will be later passed through softmax layer
+        # this logits will be later passed through sigmoid layer
         self.logits = tf.matmul(self.inputs, self.W) + self.b
 
         # Step 5: define loss function
@@ -67,7 +59,7 @@ class TfBinaryClassifier(BaseEstimator, ClassifierMixin):
 
     def fit(self, X, y=None):
         tf.reset_default_graph()
-        self._model(X.shape[1], 1)
+        self.__model(X.shape[1], 1)
         self.saver = tf.train.Saver()
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())

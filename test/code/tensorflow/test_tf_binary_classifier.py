@@ -1,6 +1,6 @@
 import unittest
-from source.code.tensorflow.titanic import read_and_clean_the_data
-from source.code.tensorflow.TfBinaryClassifier import TfBinaryClassifier
+from source.code.preprocessing.dataloader import read_and_clean_titanic_data
+from source.code.tensorflow.tfbinaryclassifier import TfBinaryClassifier
 
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import accuracy_score
@@ -9,14 +9,10 @@ from sklearn.metrics import recall_score
 from sklearn.model_selection import train_test_split
 
 
-class TestTitanic(unittest.TestCase):
-
-    def test_read_and_clean_the_data(self):
-        X, y = read_and_clean_the_data()
-        self.assertEquals(len(X), len(y))
+class TestTfBinaryClassifier(unittest.TestCase):
 
     def test_tf_binary_classifier_predict(self):
-        X, y = read_and_clean_the_data()
+        X, y = read_and_clean_titanic_data()
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42, stratify=y)
 
         classifier = TfBinaryClassifier(
@@ -35,7 +31,7 @@ class TestTitanic(unittest.TestCase):
         print('Recall: {}'.format(recall_score(y_test[:, 0].tolist(), y_pred)))
 
     def test_tf_binary_classifier_predict_proba(self):
-        X, y = read_and_clean_the_data()
+        X, y = read_and_clean_titanic_data()
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42, stratify=y)
 
         classifier = TfBinaryClassifier(
