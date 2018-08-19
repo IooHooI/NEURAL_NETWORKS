@@ -27,18 +27,18 @@ def read_and_clean_titanic_data():
 
     pipeline = Pipeline([
         ('union', FeatureUnion([
-                ('bin', Pipeline(
-                    [
-                        ('choose', ItemSelector(bin_features))
-                    ]
-                )),
-                ('num', Pipeline(
-                    [
-                        ('choose', ItemSelector(num_features)),
-                        ('scale', StandardScaler())
-                    ]
-                ))
-            ]))
+            ('bin', Pipeline(
+                [
+                    ('choose', ItemSelector(bin_features))
+                ]
+            )),
+            ('num', Pipeline(
+                [
+                    ('choose', ItemSelector(num_features)),
+                    ('scale', StandardScaler())
+                ]
+            ))
+        ]))
     ])
 
     X = titanic[num_features + cat_features + bin_features]
