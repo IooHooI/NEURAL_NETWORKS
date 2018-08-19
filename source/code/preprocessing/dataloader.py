@@ -1,16 +1,17 @@
 import os
-import pandas as pd
-import numpy as np
-from tqdm import tqdm
-import requests
-from source.code.preprocessing.itemsselector import ItemSelector
-from source.code.preprocessing.mylabelbinarizer import MyLabelBinarizer
-from source.code.preprocessing.utils import create_sub_folders
 
+import numpy as np
+import pandas as pd
+import requests
+from sklearn.datasets import load_boston
 from sklearn.pipeline import FeatureUnion
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from sklearn.datasets import load_boston
+from tqdm import tqdm
+
+from source.code.preprocessing.itemsselector import ItemSelector
+from source.code.preprocessing.mylabelbinarizer import MyLabelBinarizer
+from source.code.preprocessing.utils import create_sub_folders
 
 
 def read_and_clean_titanic_data():

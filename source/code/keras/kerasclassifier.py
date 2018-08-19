@@ -1,9 +1,9 @@
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.callbacks import ModelCheckpoint
-from keras.callbacks import EarlyStopping
-from sklearn.base import BaseEstimator, ClassifierMixin
 import numpy as np
+from keras.callbacks import EarlyStopping
+from keras.callbacks import ModelCheckpoint
+from keras.layers import Dense
+from keras.models import Sequential
+from sklearn.base import BaseEstimator, ClassifierMixin
 
 
 class KerasClassifier(BaseEstimator, ClassifierMixin):

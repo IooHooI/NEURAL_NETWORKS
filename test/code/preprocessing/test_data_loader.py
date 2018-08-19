@@ -1,8 +1,8 @@
 import unittest
 
-from source.code.preprocessing.dataloader import read_and_clean_titanic_data
-from source.code.preprocessing.dataloader import read_and_clean_thyroid_data
 from source.code.preprocessing.dataloader import read_and_clean_boston_data
+from source.code.preprocessing.dataloader import read_and_clean_thyroid_data
+from source.code.preprocessing.dataloader import read_and_clean_titanic_data
 
 
 class TestDataLoader(unittest.TestCase):

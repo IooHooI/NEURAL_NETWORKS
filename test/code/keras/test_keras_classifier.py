@@ -1,15 +1,16 @@
 import unittest
-import numpy as np
-from source.code.preprocessing.dataloader import read_and_clean_titanic_data
-from source.code.preprocessing.dataloader import read_and_clean_thyroid_data
-from source.code.keras.kerasclassifier import KerasClassifier
-from source.code.preprocessing.utils import create_sub_folders
 
-from sklearn.metrics import roc_auc_score
+import numpy as np
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
+from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
+
+from source.code.keras.kerasclassifier import KerasClassifier
+from source.code.preprocessing.dataloader import read_and_clean_thyroid_data
+from source.code.preprocessing.dataloader import read_and_clean_titanic_data
+from source.code.preprocessing.utils import create_sub_folders
 
 
 def fit_the_network(classification, data_loader_function):

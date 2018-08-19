@@ -1,7 +1,9 @@
 import os
+
 import numpy as np
 import tensorflow as tf
 from sklearn.base import BaseEstimator, ClassifierMixin
+
 from source.code.preprocessing.utils import next_batch
 
 
