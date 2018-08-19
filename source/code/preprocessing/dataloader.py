@@ -1,5 +1,8 @@
+import os
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
+import requests
 from source.code.preprocessing.itemsselector import ItemSelector
 from source.code.preprocessing.mylabelbinarizer import MyLabelBinarizer
 
@@ -9,8 +12,24 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.datasets import load_boston
 
 
+def create_sub_folders(path):
+    folders = path.split('/')
+    sub_folder = ''
+    for folder in folders:
+        sub_folder += folder + '/'
+        if not os.path.exists(sub_folder):
+            os.mkdir(sub_folder)
+
+
 def read_and_clean_titanic_data():
-    # TODO: write file downloader
+    if not os.path.exists('../../../data/dataset/titanic3.xls'):
+        response = requests.get('http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3.xls', stream=True)
+        if not os.path.exists('../../../data/dataset'):
+            create_sub_folders('../../../data/dataset')
+        with open('../../../data/dataset/titanic3.xls', "wb") as handle:
+            for data in tqdm(response.iter_content()):
+                handle.write(data)
+
     titanic = pd.read_excel('../../../data/dataset/titanic3.xls')
 
     titanic.age.fillna(titanic.age.mean(), inplace=True)
@@ -51,7 +70,14 @@ def read_and_clean_titanic_data():
 
 
 def read_and_clean_thyroid_data():
-    # TODO: write file downloader
+    if not os.path.exists('../../../data/dataset/dataset_57_hypothyroid.csv'):
+        response = requests.get('https://www.openml.org/data/get_csv/57/dataset_57_hypothyroid.arff', stream=True)
+        if not os.path.exists('../../../data/dataset'):
+            create_sub_folders('../../../data/dataset')
+        with open('../../../data/dataset/dataset_57_hypothyroid.csv', "wb") as handle:
+            for data in tqdm(response.iter_content()):
+                handle.write(data)
+
     hypothyroid = pd.read_csv('../../../data/dataset/dataset_57_hypothyroid.csv')
 
     hypothyroid.sex.replace({'M': 0, 'F': 1}, inplace=True)
