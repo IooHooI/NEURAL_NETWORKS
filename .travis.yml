@@ -8,3 +8,6 @@ script:
   - cd ../../..
   - cd test/code/tensorflow
   - pytest test_tf_classifier.py
+  - cd ../../..
+  - cd test/code/keras
+  - pytest test_keras_classifier.py

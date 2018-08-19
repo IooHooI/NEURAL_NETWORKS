@@ -60,7 +60,7 @@ class TestTfClassifier(unittest.TestCase):
 
         print('Roc-Auc: {}'.format(roc_auc_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
 
-    def test_tf_multy_classification_predict(self):
+    def test_tf_multi_classification_predict(self):
         y_test, y_pred = predict_case('multi', read_and_clean_thyroid_data)
 
         self.assertEquals(len(y_test), len(y_pred))
@@ -71,7 +71,7 @@ class TestTfClassifier(unittest.TestCase):
         print('Micro Precision: {}'.format(precision_score(np.argmax(y_test, 1), y_pred, average='micro')))
         print('Micro Recall: {}'.format(recall_score(np.argmax(y_test, 1), y_pred, average='micro')))
 
-    def test_tf_multy_classification_predict_proba(self):
+    def test_tf_multi_classification_predict_proba(self):
         y_test, y_pred = predict_proba_case('multi', read_and_clean_thyroid_data)
 
         self.assertEquals(len(y_test), len(y_pred))
