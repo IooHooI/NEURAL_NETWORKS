@@ -1,4 +1,5 @@
 import unittest
+import os
 import numpy as np
 from source.code.preprocessing.dataloader import read_and_clean_titanic_data
 from source.code.preprocessing.dataloader import read_and_clean_thyroid_data
@@ -11,16 +12,26 @@ from sklearn.metrics import recall_score
 from sklearn.model_selection import train_test_split
 
 
+def create_sub_folders(path):
+    folders = path.split('/')
+    sub_folder = ''
+    for folder in folders:
+        sub_folder += folder + '/'
+        if not os.path.exists(sub_folder):
+            os.mkdir(sub_folder)
+
+
 def fit_the_network(classification, data_loader_function):
     X, y = data_loader_function()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42, stratify=y)
-
+    create_sub_folders('../../../data/dataset/keras_model')
     classifier = KerasClassifier(
-        checkpoint_dir='../../../data/dataset/tf_model',
+        checkpoint_dir='../../../data/dataset/keras_model',
         classification=classification,
         n_epochs=60,
         learning_rate=0.02
     )
+
     classifier.fit(X_train, y_train)
     return classifier, X_test, y_test
 
@@ -43,7 +54,7 @@ def predict_proba_case(classification, data_loader_function):
 
 class TestKerasClassifier(unittest.TestCase):
 
-    def test_tf_binary_classification_predict(self):
+    def test_keras_binary_classification_predict(self):
         y_test, y_pred = predict_case('binary', read_and_clean_titanic_data)
 
         self.assertEquals(len(y_test), len(y_pred))
@@ -52,7 +63,7 @@ class TestKerasClassifier(unittest.TestCase):
         print('Precision: {}'.format(precision_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
         print('Recall: {}'.format(recall_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
 
-    def test_tf_binary_classification_predict_proba(self):
+    def test_keras_binary_classification_predict_proba(self):
         y_test, y_pred = predict_proba_case('binary', read_and_clean_titanic_data)
 
         self.assertEquals(len(y_test), len(y_pred))
@@ -60,7 +71,7 @@ class TestKerasClassifier(unittest.TestCase):
 
         print('Roc-Auc: {}'.format(roc_auc_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
 
-    def test_tf_multi_classification_predict(self):
+    def test_keras_multi_classification_predict(self):
         y_test, y_pred = predict_case('multi', read_and_clean_thyroid_data)
 
         self.assertEquals(len(y_test), len(y_pred))
@@ -71,7 +82,7 @@ class TestKerasClassifier(unittest.TestCase):
         print('Micro Precision: {}'.format(precision_score(np.argmax(y_test, 1), y_pred, average='micro')))
         print('Micro Recall: {}'.format(recall_score(np.argmax(y_test, 1), y_pred, average='micro')))
 
-    def test_tf_multi_classification_predict_proba(self):
+    def test_keras_multi_classification_predict_proba(self):
         y_test, y_pred = predict_proba_case('multi', read_and_clean_thyroid_data)
 
         self.assertEquals(len(y_test), len(y_pred))
