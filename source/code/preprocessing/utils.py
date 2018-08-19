@@ -1,26 +1,11 @@
-from sklearn.pipeline import Pipeline
-from source.code.preprocessing.itemsselector import ItemSelector
-from source.code.preprocessing.mylabelbinarizer import MyLabelBinarizer
+import math
 
 
-def generate_features_names(bin_features, cat_features, num_features):
-    res = []
-    if len(bin_features) > 0:
-        res += bin_features
-    if len(cat_features) > 0:
-        for cat_feature in cat_features:
-            res += list(map(lambda x: cat_feature + '_' + str(x), range(cat_features[cat_feature])))
-    if len(num_features) > 0:
-        res += num_features
-    return res
-
-
-def generate_cat_feature_counts(df, cat_features):
-    return dict(zip(cat_features, list(map(lambda cat: df[cat].nunique(), cat_features))))
-
-
-def generate_binarized_pipeline(column):
-    return (column, Pipeline([
-        ('choose', ItemSelector(column)),
-        ('binarize', MyLabelBinarizer())
-    ]))
+def next_batch(X, y, batch_size):
+    # Step 1.0: Calculate batches count
+    batch_count = int(math.ceil(len(X) / batch_size))
+    # Step 1.1: Generate the next batch
+    for curr in range(batch_count):
+        batch_beginning = curr
+        batch_end = curr + min(batch_size, len(X) - curr * batch_size)
+        yield X[batch_beginning: batch_end, :], y[batch_beginning: batch_end]
