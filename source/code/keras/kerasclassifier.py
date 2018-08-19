@@ -17,11 +17,11 @@ class KerasClassifier(BaseEstimator, ClassifierMixin):
         self.checkpoint_dir = checkpoint_dir
 
     def __build_for_binary_classification(self, input_shape, output_shape):
-        self.model.add(Dense(input_dim=input_shape, output_dim=output_shape, activation='sigmoid', init="normal"))
+        self.model.add(Dense(input_dim=input_shape, units=output_shape, activation='sigmoid', kernel_initializer="normal"))
         self.model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     def __build_for_multi_classification(self, input_shape, output_shape):
-        self.model.add(Dense(input_dim=input_shape, output_dim=output_shape, activation='softmax', init="normal"))
+        self.model.add(Dense(input_dim=input_shape, units=output_shape, activation='softmax', kernel_initializer="normal"))
         self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     def __build_the_graph(self, input_shape, output_shape):
