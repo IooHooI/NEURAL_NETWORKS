@@ -10,6 +10,7 @@ from sklearn.datasets import load_boston
 
 
 def read_and_clean_titanic_data():
+    # TODO: write file downloader
     titanic = pd.read_excel('../../../data/dataset/titanic3.xls')
 
     titanic.age.fillna(titanic.age.mean(), inplace=True)
@@ -50,6 +51,7 @@ def read_and_clean_titanic_data():
 
 
 def read_and_clean_thyroid_data():
+    # TODO: write file downloader
     hypothyroid = pd.read_csv('../../../data/dataset/dataset_57_hypothyroid.csv')
 
     hypothyroid.sex.replace({'M': 0, 'F': 1}, inplace=True)
