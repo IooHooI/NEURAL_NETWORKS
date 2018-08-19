@@ -1,9 +1,9 @@
 import unittest
-import os
 import numpy as np
 from source.code.preprocessing.dataloader import read_and_clean_titanic_data
 from source.code.preprocessing.dataloader import read_and_clean_thyroid_data
 from source.code.keras.kerasclassifier import KerasClassifier
+from source.code.preprocessing.utils import create_sub_folders
 
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import accuracy_score
@@ -12,21 +12,12 @@ from sklearn.metrics import recall_score
 from sklearn.model_selection import train_test_split
 
 
-def create_sub_folders(path):
-    folders = path.split('/')
-    sub_folder = ''
-    for folder in folders:
-        sub_folder += folder + '/'
-        if not os.path.exists(sub_folder):
-            os.mkdir(sub_folder)
-
-
 def fit_the_network(classification, data_loader_function):
     X, y = data_loader_function()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42, stratify=y)
     create_sub_folders('../../../data/dataset/keras_model')
     classifier = KerasClassifier(
-        checkpoint_dir='../../../data/dataset/keras_model',
+        checkpoint_dir='../../../data/dataset/keras_model/model.h5',
         classification=classification,
         n_epochs=60,
         learning_rate=0.02

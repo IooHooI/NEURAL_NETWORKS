@@ -1,4 +1,5 @@
 import math
+import os
 
 
 def next_batch(X, y, batch_size):
@@ -9,3 +10,12 @@ def next_batch(X, y, batch_size):
         batch_beginning = curr
         batch_end = curr + min(batch_size, len(X) - curr * batch_size)
         yield X[batch_beginning: batch_end, :], y[batch_beginning: batch_end]
+
+
+def create_sub_folders(path):
+    folders = path.split('/')
+    sub_folder = ''
+    for folder in folders:
+        sub_folder += folder + '/'
+        if not os.path.exists(sub_folder):
+            os.mkdir(sub_folder)

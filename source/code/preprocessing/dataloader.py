@@ -5,20 +5,12 @@ from tqdm import tqdm
 import requests
 from source.code.preprocessing.itemsselector import ItemSelector
 from source.code.preprocessing.mylabelbinarizer import MyLabelBinarizer
+from source.code.preprocessing.utils import create_sub_folders
 
 from sklearn.pipeline import FeatureUnion
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.datasets import load_boston
-
-
-def create_sub_folders(path):
-    folders = path.split('/')
-    sub_folder = ''
-    for folder in folders:
-        sub_folder += folder + '/'
-        if not os.path.exists(sub_folder):
-            os.mkdir(sub_folder)
 
 
 def read_and_clean_titanic_data():
