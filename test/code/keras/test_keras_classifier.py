@@ -18,8 +18,8 @@ def fit_the_network(classification, data_loader_function):
     classifier = KerasClassifier(
         checkpoint_dir='../../../data/dataset/keras_model/model.h5',
         classification=classification,
-        n_epochs=60,
-        learning_rate=0.02
+        n_epochs=1060,
+        learning_rate=0.001
     )
 
     classifier.fit(X_train, y_train)

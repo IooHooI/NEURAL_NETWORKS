@@ -17,8 +17,8 @@ def fit_the_network(classification, data_loader_function):
     classifier = TfClassifier(
         checkpoint_dir='../../../data/dataset/tf_model',
         classification=classification,
-        n_epochs=60,
-        learning_rate=0.02
+        n_epochs=1060,
+        learning_rate=0.001
     )
     classifier.fit(X_train, y_train)
     return classifier, X_test, y_test
