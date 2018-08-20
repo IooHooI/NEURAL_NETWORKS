@@ -7,9 +7,11 @@ jobs:
         - cd test/code/preprocessing
         - pytest test_data_loader.py
         - cd ../../..
+      script:
         - cd test/code/tensorflow
         - pytest test_tf_classifier.py
         - cd ../../..
+      script:
         - cd test/code/keras
         - pytest test_keras_classifier.py
         - pytest test_keras_regressor.py
