@@ -7,6 +7,7 @@ from sklearn.datasets import load_boston
 from sklearn.pipeline import FeatureUnion
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import PolynomialFeatures
 from tqdm import tqdm
 
 from source.code.preprocessing.itemsselector import ItemSelector
@@ -144,6 +145,9 @@ def read_and_clean_boston_data():
     X, y = load_boston(return_X_y=True)
 
     X = StandardScaler().fit_transform(X)
+
+    X = PolynomialFeatures().fit_transform(X)
+
     y = y.reshape([len(y), 1])
 
     return X, y

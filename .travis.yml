@@ -1,13 +1,15 @@
-language: python
-
-python: 3.6
-
-script:
-  - cd test/code/preprocessing
-  - pytest test_data_loader.py
-  - cd ../../..
-  - cd test/code/tensorflow
-  - pytest test_tf_classifier.py
-  - cd ../../..
-  - cd test/code/keras
-  - pytest test_keras_classifier.py
+jobs:
+  include:
+    - stage: absolute_minimum
+      language: python
+      python: 3.6
+      script:
+        - cd test/code/preprocessing
+        - pytest test_data_loader.py
+        - cd ../../..
+        - cd test/code/tensorflow
+        - pytest test_tf_classifier.py
+        - cd ../../..
+        - cd test/code/keras
+        - pytest test_keras_classifier.py
+        - pytest test_keras_regressor.py
