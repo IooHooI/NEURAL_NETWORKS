@@ -1,26 +1,37 @@
 jobs:
   include:
     - stage: absolute_minimum
+      name: "Absolute minimum"
       language: python
       python: 3.6
       script:
         - cd test/code/preprocessing
         - pytest test_data_loader.py
         - cd ../../..
+    - stage: absolute_minimum
+      name: "Absolute minimum"
+      language: python
+      python: 3.6
       script:
         - cd test/code/tensorflow
         - pytest test_tf_classifier.py
         - cd ../../..
+    - stage: absolute_minimum
+      name: "Absolute minimum"
+      language: python
+      python: 3.6
       script:
         - cd test/code/keras
         - pytest test_keras_classifier.py
         - pytest test_keras_regressor.py
     - stage: main_task
+      name: "Main task"
       language: python
       python: 3.6
       script:
         - echo "TBD"
     - stage: extented_task
+      name: "Extended task"
       language: python
       python: 3.6
       script:
