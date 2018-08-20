@@ -13,3 +13,13 @@ jobs:
         - cd test/code/keras
         - pytest test_keras_classifier.py
         - pytest test_keras_regressor.py
+    - stage: main_task
+      language: python
+      python: 3.6
+      script:
+        - echo "TBD"
+    - stage: extented_task
+      language: python
+      python: 3.6
+      script:
+        - echo "TBD"
