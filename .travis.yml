@@ -1,7 +1,7 @@
 jobs:
   include:
     - stage: absolute_minimum
-      name: "Absolute minimum"
+      name: "Test data loader"
       language: python
       python: 3.6
       script:
@@ -9,7 +9,7 @@ jobs:
         - pytest test_data_loader.py
         - cd ../../..
     - stage: absolute_minimum
-      name: "Absolute minimum"
+      name: "Test TensorFlow classifier"
       language: python
       python: 3.6
       script:
@@ -17,15 +17,33 @@ jobs:
         - pytest test_tf_classifier.py
         - cd ../../..
     - stage: absolute_minimum
-      name: "Absolute minimum"
+      name: "Test Keras classifier"
       language: python
       python: 3.6
       script:
         - cd test/code/keras
         - pytest test_keras_classifier.py
-        - pytest test_keras_regressor.py
+    - stage: absolute_minimum
+      name: "Test Keras regressor"
+      language: python
+      python: 3.6
+      script:
+      - cd test/code/keras
+      - pytest test_keras_regressor.py
     - stage: main_task
-      name: "Main task"
+      name: "Test RNN"
+      language: python
+      python: 3.6
+      script:
+        - echo "TBD"
+    - stage: main_task
+      name: "Test FastText"
+      language: python
+      python: 3.6
+      script:
+        - echo "TBD"
+    - stage: main_task
+      name: "Test NN with pre-trained W2V"
       language: python
       python: 3.6
       script:
