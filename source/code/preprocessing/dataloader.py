@@ -3,6 +3,10 @@ import zipfile
 import numpy as np
 import pandas as pd
 import requests
+
+from keras.preprocessing.text import one_hot
+from keras.preprocessing.sequence import pad_sequences
+
 from sklearn.datasets import load_boston
 from sklearn.pipeline import FeatureUnion
 from sklearn.pipeline import Pipeline
@@ -189,6 +193,9 @@ def read_and_clean_feedback_data():
         error_bad_lines=False
     )
 
+    feedbacks = feedbacks[~feedbacks.feedback.isnull()]
+    feedbacks = feedbacks[feedbacks.feedback.apply(lambda x: len(x) > 60)]
+
     mapping_url = 'https://raw.githubusercontent.com/akutuzov/universal-pos-tags' \
                   '/4653e8a9154e93fe2f417c7fdb7a357b7d6ce333' \
                   '/ru-rnc.map'
@@ -204,6 +211,9 @@ def read_and_clean_feedback_data():
 
     y = feedbacks.rating.values.reshape([-1, 1])
     X = feedbacks.feedback.values
-    X = list(map(lambda x: phrases_processor.process(x, postags=False), X))
+    X = list(map(lambda x: ' '.join(phrases_processor.process(x, postags=False)), X))
+
+    X = list(map(lambda x: one_hot(x, n=10000), X))
+    X = pad_sequences(X, maxlen=1000)
 
     return X, y
