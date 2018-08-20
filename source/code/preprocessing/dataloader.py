@@ -1,5 +1,5 @@
 import os
-
+import zipfile
 import numpy as np
 import pandas as pd
 import requests
@@ -13,6 +13,7 @@ from tqdm import tqdm
 from source.code.preprocessing.itemsselector import ItemSelector
 from source.code.preprocessing.mylabelbinarizer import MyLabelBinarizer
 from source.code.preprocessing.utils import create_sub_folders
+from source.code.preprocessing.preprocessor import Preprocessor
 
 
 def read_and_clean_titanic_data():
@@ -149,5 +150,60 @@ def read_and_clean_boston_data():
     X = PolynomialFeatures().fit_transform(X)
 
     y = y.reshape([len(y), 1])
+
+    return X, y
+
+
+def read_and_clean_feedback_data():
+    if not os.path.exists('../../../data/dataset/feedback.csv'):
+        response = requests.get(
+            'https://drive.google.com/uc?authuser=0&id=1ta66bU4HtbnG5MBD-yvy9x_36lDvViB4&export=download',
+            stream=True
+        )
+        if not os.path.exists('../../../data/dataset'):
+            create_sub_folders('../../../data/dataset')
+        with open('../../../data/dataset/feedback.zip', "wb") as handle:
+            for data in tqdm(response.iter_content()):
+                handle.write(data)
+    zip_ref = zipfile.ZipFile('../../../data/dataset/feedback.zip', 'r')
+    zip_ref.extractall('../../../data/dataset/')
+    zip_ref.close()
+    feedbacks_cleaned = []
+    with open('../../../data/dataset/feedback.csv', 'r') as f:
+        feedbacks = f.readlines()
+        for i in range(len(feedbacks)):
+            feedbacks_cleaned.append(feedbacks[i].split(',', maxsplit=4))
+        for i in range(1, len(feedbacks)):
+            feedbacks_cleaned[i][-1] = feedbacks_cleaned[i][-1].replace('"', '').rstrip()
+            feedbacks_cleaned[i][-1] = '"' + feedbacks_cleaned[i][-1] + '"\n'
+        for i in range(len(feedbacks)):
+            feedbacks_cleaned[i] = ','.join(feedbacks_cleaned[i])
+    with open('../../../data/dataset/feedback.csv', 'w') as f:
+        f.writelines(feedbacks_cleaned)
+
+    feedbacks = pd.read_csv(
+        '../../../data/dataset/feedback.csv',
+        delimiter=',',
+        sep=',',
+        engine='python',
+        error_bad_lines=False
+    )
+
+    mapping_url = 'https://raw.githubusercontent.com/akutuzov/universal-pos-tags' \
+                  '/4653e8a9154e93fe2f417c7fdb7a357b7d6ce333' \
+                  '/ru-rnc.map'
+
+    mystem2upos = {}
+    r = requests.get(mapping_url, stream=True)
+    for pair in r.text.split('\n'):
+        pair = pair.split()
+        if len(pair) > 1:
+            mystem2upos[pair[0]] = pair[1]
+
+    phrases_processor = Preprocessor(mystem2upos)
+
+    y = feedbacks.rating.values.reshape([-1, 1])
+    X = feedbacks.feedback.values
+    X = list(map(lambda x: phrases_processor.process(x, postags=False), X))
 
     return X, y
