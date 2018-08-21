@@ -35,7 +35,8 @@ jobs:
       language: python
       python: 3.6
       script:
-        - echo "TBD"
+        - cd test/code/keras
+        - pytest test_keras_rnn_regressor.py
     - stage: main_task
       name: "Test FastText"
       language: python

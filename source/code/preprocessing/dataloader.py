@@ -3,9 +3,7 @@ import zipfile
 import numpy as np
 import pandas as pd
 import requests
-
-from keras.preprocessing.text import one_hot
-from keras.preprocessing.sequence import pad_sequences
+import codecs
 
 from sklearn.datasets import load_boston
 from sklearn.pipeline import FeatureUnion
@@ -173,28 +171,35 @@ def read_and_clean_feedback_data():
     zip_ref.extractall('../../../data/dataset/')
     zip_ref.close()
     feedbacks_cleaned = []
-    with open('../../../data/dataset/feedback.csv', 'r') as f:
-        feedbacks = f.readlines()
-        for i in range(len(feedbacks)):
-            feedbacks_cleaned.append(feedbacks[i].split(',', maxsplit=4))
-        for i in range(1, len(feedbacks)):
-            feedbacks_cleaned[i][-1] = feedbacks_cleaned[i][-1].replace('"', '').rstrip()
-            feedbacks_cleaned[i][-1] = '"' + feedbacks_cleaned[i][-1] + '"\n'
-        for i in range(len(feedbacks)):
-            feedbacks_cleaned[i] = ','.join(feedbacks_cleaned[i])
-    with open('../../../data/dataset/feedback.csv', 'w') as f:
-        f.writelines(feedbacks_cleaned)
+
+    file = codecs.open("../../../data/dataset/feedback.csv", "r", "utf-8")
+    feedbacks = file.read()
+    file.close()
+    feedbacks = feedbacks.split('\n')
+    for i in range(len(feedbacks)):
+        feedbacks_cleaned.append(feedbacks[i].split(',', maxsplit=4))
+    for i in range(1, len(feedbacks)):
+        feedbacks_cleaned[i][-1] = feedbacks_cleaned[i][-1].replace('"', '').rstrip()
+        feedbacks_cleaned[i][-1] = '"' + feedbacks_cleaned[i][-1] + '"\n'
+    for i in range(len(feedbacks)):
+        feedbacks_cleaned[i] = ','.join(feedbacks_cleaned[i])
+    file = codecs.open("../../../data/dataset/feedback.csv", "w", "utf-8")
+    file.write('\n'.join(feedbacks_cleaned))
+    file.close()
 
     feedbacks = pd.read_csv(
         '../../../data/dataset/feedback.csv',
         delimiter=',',
         sep=',',
         engine='python',
-        error_bad_lines=False
+        error_bad_lines=False,
+        encoding="utf-8"
     )
 
     feedbacks = feedbacks[~feedbacks.feedback.isnull()]
     feedbacks = feedbacks[feedbacks.feedback.apply(lambda x: len(x) > 60)]
+
+    feedbacks = feedbacks.loc[0:400]
 
     mapping_url = 'https://raw.githubusercontent.com/akutuzov/universal-pos-tags' \
                   '/4653e8a9154e93fe2f417c7fdb7a357b7d6ce333' \
@@ -211,9 +216,6 @@ def read_and_clean_feedback_data():
 
     y = feedbacks.rating.values.reshape([-1, 1])
     X = feedbacks.feedback.values
-    X = list(map(lambda x: ' '.join(phrases_processor.process(x, postags=False)), X))
-
-    X = list(map(lambda x: one_hot(x, n=10000), X))
-    X = pad_sequences(X, maxlen=1000)
+    X = list(map(lambda x: ' '.join(phrases_processor.process(x, postags=False)), tqdm(X)))
 
     return X, y

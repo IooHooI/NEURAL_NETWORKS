@@ -4,6 +4,7 @@ from keras.callbacks import ModelCheckpoint
 from keras.layers import Dense
 from keras.models import Sequential
 from sklearn.base import BaseEstimator, ClassifierMixin
+from keras.optimizers import Adam
 
 
 class KerasClassifier(BaseEstimator, ClassifierMixin):
@@ -18,11 +19,11 @@ class KerasClassifier(BaseEstimator, ClassifierMixin):
 
     def __build_for_binary_classification(self, input_shape, output_shape):
         self.model.add(Dense(input_dim=input_shape, units=output_shape, activation='sigmoid', kernel_initializer="normal"))
-        self.model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        self.model.compile(loss='binary_crossentropy', optimizer=Adam(lr=self.learning_rate), metrics=['accuracy'])
 
     def __build_for_multi_classification(self, input_shape, output_shape):
         self.model.add(Dense(input_dim=input_shape, units=output_shape, activation='softmax', kernel_initializer="normal"))
-        self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+        self.model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=self.learning_rate), metrics=['accuracy'])
 
     def __build_the_graph(self, input_shape, output_shape):
         if self.classification == 'binary':

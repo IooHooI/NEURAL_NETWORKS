@@ -3,6 +3,7 @@ from keras.callbacks import ModelCheckpoint
 from keras.layers import Dense
 from keras.models import Sequential
 from sklearn.base import BaseEstimator, ClassifierMixin
+from keras.optimizers import Adam
 
 
 class KerasRegressor(BaseEstimator, ClassifierMixin):
@@ -18,7 +19,7 @@ class KerasRegressor(BaseEstimator, ClassifierMixin):
         self.model.add(
             Dense(input_dim=input_shape, units=output_shape, kernel_initializer="normal", activation='relu')
         )
-        self.model.compile(loss='mean_squared_error', optimizer='adam')
+        self.model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate))
 
     def fit(self, X, y=None):
         self.__build_the_graph(X.shape[1], y.shape[1])
