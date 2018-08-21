@@ -14,7 +14,7 @@ def fit_the_network(data_loader_function):
     create_sub_folders('../../../data/dataset/keras_model')
     classifier = KerasRNNRegressor(
         checkpoint_dir='../../../data/dataset/keras_model/model.h5',
-        n_epochs=30,
+        n_epochs=300,
         learning_rate=0.001
     )
     classifier.fit(X_train, y_train)

@@ -199,7 +199,7 @@ def read_and_clean_feedback_data():
     feedbacks = feedbacks[~feedbacks.feedback.isnull()]
     feedbacks = feedbacks[feedbacks.feedback.apply(lambda x: len(x) > 60)]
 
-    feedbacks = feedbacks.loc[0:400]
+    # feedbacks = feedbacks.loc[0:400]
 
     mapping_url = 'https://raw.githubusercontent.com/akutuzov/universal-pos-tags' \
                   '/4653e8a9154e93fe2f417c7fdb7a357b7d6ce333' \
