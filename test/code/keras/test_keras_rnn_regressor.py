@@ -31,9 +31,13 @@ def predict_case(data_loader_function):
 
 class TestKerasRegressor(unittest.TestCase):
 
+    def setUp(self):
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
+
     def test_keras_regression_predict(self):
         y_test, y_pred = predict_case(read_and_clean_feedback_data)
 
         self.assertEquals(len(y_test), len(y_pred))
 
-        logging.info('R2-Score: {}'.format(r2_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
+        self.logger.info('R2-Score: {}'.format(r2_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
