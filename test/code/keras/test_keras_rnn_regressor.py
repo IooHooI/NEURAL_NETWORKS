@@ -1,5 +1,5 @@
+import logging
 import unittest
-
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 
@@ -36,4 +36,4 @@ class TestKerasRegressor(unittest.TestCase):
 
         self.assertEquals(len(y_test), len(y_pred))
 
-        print('R2-Score: {}'.format(r2_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
+        logging.info('R2-Score: {}'.format(r2_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
