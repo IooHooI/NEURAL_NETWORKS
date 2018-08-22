@@ -33,7 +33,7 @@ class TestKerasRegressor(unittest.TestCase):
 
     def setUp(self):
         self.logger = logging.getLogger()
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.INFO)
 
     def test_keras_regression_predict(self):
         y_test, y_pred = predict_case(read_and_clean_feedback_data)
