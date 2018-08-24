@@ -1,9 +1,8 @@
 import os
-import zipfile
+import json
 import numpy as np
 import pandas as pd
 import requests
-import codecs
 
 from sklearn.datasets import load_boston
 from sklearn.pipeline import FeatureUnion
@@ -15,19 +14,29 @@ from tqdm import tqdm
 from source.code.preprocessing.itemsselector import ItemSelector
 from source.code.preprocessing.mylabelbinarizer import MyLabelBinarizer
 from source.code.preprocessing.utils import create_sub_folders
-from source.code.preprocessing.preprocessor import Preprocessor
+
+
+data_sources_description = '../../../data/data_sources.json'
+local_path = '../../../data/dataset'
+
+
+def download_data_from(from_param, to_param):
+    file_name = '{}.{}'.format(from_param['name'], from_param['fmt'])
+    file_path = os.path.join(to_param, file_name)
+    if not os.path.exists(to_param):
+        create_sub_folders(to_param)
+    if not os.path.exists(file_path):
+        response = requests.get(from_param['link'], stream=True)
+        with open(file_path, "wb") as handle:
+            for data in tqdm(response.iter_content()):
+                handle.write(data)
+    return file_path
 
 
 def read_and_clean_titanic_data():
-    if not os.path.exists('../../../data/dataset/titanic3.xls'):
-        response = requests.get('http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3.xls', stream=True)
-        if not os.path.exists('../../../data/dataset'):
-            create_sub_folders('../../../data/dataset')
-        with open('../../../data/dataset/titanic3.xls', "wb") as handle:
-            for data in tqdm(response.iter_content()):
-                handle.write(data)
+    data_sources = json.load(open(data_sources_description, 'r'))
 
-    titanic = pd.read_excel('../../../data/dataset/titanic3.xls')
+    titanic = pd.read_excel(download_data_from(data_sources[0], local_path))
 
     titanic.age.fillna(titanic.age.mean(), inplace=True)
     titanic.fare.fillna(titanic.fare.mean(), inplace=True)
@@ -67,15 +76,9 @@ def read_and_clean_titanic_data():
 
 
 def read_and_clean_thyroid_data():
-    if not os.path.exists('../../../data/dataset/dataset_57_hypothyroid.csv'):
-        response = requests.get('https://www.openml.org/data/get_csv/57/dataset_57_hypothyroid.arff', stream=True)
-        if not os.path.exists('../../../data/dataset'):
-            create_sub_folders('../../../data/dataset')
-        with open('../../../data/dataset/dataset_57_hypothyroid.csv', "wb") as handle:
-            for data in tqdm(response.iter_content()):
-                handle.write(data)
+    data_sources = json.load(open(data_sources_description, 'r'))
 
-    hypothyroid = pd.read_csv('../../../data/dataset/dataset_57_hypothyroid.csv')
+    hypothyroid = pd.read_csv(download_data_from(data_sources[1], local_path))
 
     hypothyroid.sex.replace({'M': 0, 'F': 1}, inplace=True)
 
@@ -157,65 +160,11 @@ def read_and_clean_boston_data():
 
 
 def read_and_clean_feedback_data():
-    if not os.path.exists('../../../data/dataset/feedback.csv'):
-        response = requests.get(
-            'https://drive.google.com/uc?authuser=0&id=1ta66bU4HtbnG5MBD-yvy9x_36lDvViB4&export=download',
-            stream=True
-        )
-        if not os.path.exists('../../../data/dataset'):
-            create_sub_folders('../../../data/dataset')
-        with open('../../../data/dataset/feedback.zip', "wb") as handle:
-            for data in tqdm(response.iter_content()):
-                handle.write(data)
-    zip_ref = zipfile.ZipFile('../../../data/dataset/feedback.zip', 'r')
-    zip_ref.extractall('../../../data/dataset/')
-    zip_ref.close()
-    feedbacks_cleaned = []
+    data_sources = json.load(open(data_sources_description, 'r'))
 
-    file = codecs.open("../../../data/dataset/feedback.csv", "r", "utf-8")
-    feedbacks = file.read()
-    file.close()
-    feedbacks = feedbacks.split('\n')
-    for i in range(len(feedbacks)):
-        feedbacks_cleaned.append(feedbacks[i].split(',', maxsplit=4))
-    for i in range(1, len(feedbacks)):
-        feedbacks_cleaned[i][-1] = feedbacks_cleaned[i][-1].replace('"', '').rstrip()
-        feedbacks_cleaned[i][-1] = '"' + feedbacks_cleaned[i][-1] + '"\n'
-    for i in range(len(feedbacks)):
-        feedbacks_cleaned[i] = ','.join(feedbacks_cleaned[i])
-    file = codecs.open("../../../data/dataset/feedback.csv", "w", "utf-8")
-    file.write('\n'.join(feedbacks_cleaned))
-    file.close()
+    feedback = pd.read_csv(download_data_from(data_sources[2], local_path))
 
-    feedbacks = pd.read_csv(
-        '../../../data/dataset/feedback.csv',
-        delimiter=',',
-        sep=',',
-        engine='python',
-        error_bad_lines=False,
-        encoding="utf-8"
-    )
-
-    feedbacks = feedbacks[~feedbacks.feedback.isnull()]
-    feedbacks = feedbacks[feedbacks.feedback.apply(lambda x: len(x) > 60)]
-
-    feedbacks = feedbacks.loc[0:1000]
-
-    mapping_url = 'https://raw.githubusercontent.com/akutuzov/universal-pos-tags' \
-                  '/4653e8a9154e93fe2f417c7fdb7a357b7d6ce333' \
-                  '/ru-rnc.map'
-
-    mystem2upos = {}
-    r = requests.get(mapping_url, stream=True)
-    for pair in r.text.split('\n'):
-        pair = pair.split()
-        if len(pair) > 1:
-            mystem2upos[pair[0]] = pair[1]
-
-    phrases_processor = Preprocessor(mystem2upos)
-
-    y = feedbacks.rating.values.reshape([-1, 1])
-    X = feedbacks.feedback.values
-    X = list(map(phrases_processor.process, tqdm(X)))
+    X = feedback[0].values
+    y = feedback[1].values
 
     return X, y

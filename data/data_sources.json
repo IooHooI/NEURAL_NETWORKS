@@ -1,0 +1,17 @@
+[
+  {
+    "name": "titanic",
+    "fmt": "xls",
+    "link": "http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3.xls"
+  },
+  {
+    "name": "thyroid",
+    "fmt": "csv",
+    "link": "https://www.openml.org/data/get_csv/57/dataset_57_hypothyroid.arff"
+  },
+  {
+    "name": "feedback",
+    "fmt": "csv",
+    "link": "https://drive.google.com/uc?authuser=0&id=1fwLMev3QCw0UOROKsUNRuUlcyYFN4AL2&export=download"
+  }
+]

@@ -40,4 +40,4 @@ class TestKerasRegressor(unittest.TestCase):
 
         self.assertEquals(len(y_test), len(y_pred))
 
-        self.logger.info('R2-Score: {}'.format(r2_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
+        print('R2-Score: {}'.format(r2_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
