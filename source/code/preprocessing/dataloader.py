@@ -164,7 +164,7 @@ def read_and_clean_feedback_data():
 
     feedback = pd.read_csv(download_data_from(data_sources[2], local_path))
 
-    X = feedback[0].values
-    y = feedback[1].values
+    X = feedback['0'].values.T
+    y = feedback['1'].values.T
 
     return X, y
