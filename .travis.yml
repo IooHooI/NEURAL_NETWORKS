@@ -31,20 +31,20 @@ jobs:
       - cd test/code/keras
       - pytest test_keras_regressor.py
     - stage: main_task
-      name: "Test RNN"
+      name: "Test Keras RNN"
       language: python
       python: 3.6
       script:
         - cd test/code/keras
         - pytest test_keras_rnn_regressor.py
     - stage: main_task
-      name: "Test FastText"
+      name: "Test Keras FastText NN"
       language: python
       python: 3.6
       script:
         - echo "TBD"
     - stage: main_task
-      name: "Test NN with pre-trained W2V"
+      name: "Test Keras NN with pre-trained W2V"
       language: python
       python: 3.6
       script:
