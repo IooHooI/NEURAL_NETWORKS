@@ -10,8 +10,18 @@ from source.code.preprocessing.dataloader import read_and_clean_thyroid_data
 from source.code.preprocessing.dataloader import read_and_clean_titanic_data
 from source.code.preprocessing.utils import create_sub_folders
 
+import logging
+
+
+logger = logging.getLogger()
+logger.level = logging.DEBUG
+
 
 def fit_the_network(classification, data_loader_function):
+    stream_handler = logging.StreamHandler(sys.stdout)
+
+    logger.addHandler(stream_handler)
+
     X, y = data_loader_function()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42, stratify=y)
     create_sub_folders('../../../data/dataset/keras_model')
