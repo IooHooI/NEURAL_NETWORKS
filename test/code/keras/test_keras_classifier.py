@@ -11,7 +11,7 @@ from source.code.preprocessing.dataloader import read_and_clean_titanic_data
 from source.code.preprocessing.utils import create_sub_folders
 
 import logging
-
+import sys
 
 logger = logging.getLogger()
 logger.level = logging.DEBUG
