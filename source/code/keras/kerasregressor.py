@@ -17,7 +17,7 @@ class KerasRegressor(BaseEstimator, ClassifierMixin):
 
     def __build_the_graph(self, input_shape, output_shape):
         self.model.add(
-            Dense(input_dim=input_shape, units=output_shape, kernel_initializer="normal", activation='Identity')
+            Dense(input_dim=input_shape, units=output_shape, kernel_initializer="normal", activation='linear')
         )
         self.model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate))
 

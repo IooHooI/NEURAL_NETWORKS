@@ -40,7 +40,7 @@ class KerasFastTextRegressor(BaseEstimator, ClassifierMixin):
     def __build_the_graph(self, max_features, embedding_dims):
         self.model.add(Embedding(max_features, 128, input_length=embedding_dims))
         self.model.add(GlobalAveragePooling1D())
-        self.model.add(Dense(1, activation='Identity'))
+        self.model.add(Dense(1, activation='linear'))
         self.model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate))
 
     def __prepare_the_data(self, X):
