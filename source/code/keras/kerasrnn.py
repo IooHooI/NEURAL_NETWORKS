@@ -23,7 +23,7 @@ class KerasRNNRegressor(BaseEstimator, ClassifierMixin):
         self.model.add(Embedding(max_features, 128, input_length=maxlen))
         self.model.add(Bidirectional(LSTM(64)))
         self.model.add(Dropout(0.5))
-        self.model.add(Dense(1, kernel_initializer='normal'))
+        self.model.add(Dense(1, activation='Identity', kernel_initializer='normal'))
         self.model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate))
 
     def __prepare_the_data(self, X):
