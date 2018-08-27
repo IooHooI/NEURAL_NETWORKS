@@ -15,7 +15,6 @@ jobs:
       script:
         - cd test/code/tensorflow
         - pytest test_tf_classifier.py
-        - cd ../../..
     - stage: absolute_minimum
       name: "Test Keras classifier"
       language: python
@@ -42,16 +41,19 @@ jobs:
       language: python
       python: 3.6
       script:
-        - echo "TBD"
+        - cd test/code/keras
+        - pytest test_keras_fast_net_regressor.py
     - stage: main_task
       name: "Test Keras NN with pre-trained W2V"
       language: python
       python: 3.6
       script:
         - echo "TBD"
+        - echo "TBD"
     - stage: extented_task
       name: "Extended task"
       language: python
       python: 3.6
       script:
+        - echo "TBD"
         - echo "TBD"

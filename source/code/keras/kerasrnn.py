@@ -10,7 +10,7 @@ from keras.preprocessing.sequence import pad_sequences
 
 class KerasRNNRegressor(BaseEstimator, ClassifierMixin):
 
-    def __init__(self, checkpoint_dir='./', maxlen=50, max_features=200, learning_rate=0.01, batch_size=128, n_epochs=6):
+    def __init__(self, checkpoint_dir='./', maxlen=50, max_features=200, learning_rate=0.001, batch_size=128, n_epochs=6):
         self.model = Sequential()
         self.maxlen = maxlen
         self.n_epochs = n_epochs
