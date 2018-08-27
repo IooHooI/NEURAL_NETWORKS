@@ -59,7 +59,7 @@ class TestKerasClassifier(unittest.TestCase):
 
         self.assertEquals(len(y_test), len(y_pred))
 
-        print('Accuracy: {}'.format(accuracy_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
+        logging.getLogger().info('Accuracy: {}'.format(accuracy_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
 
     def test_keras_binary_classification_predict_proba(self):
         y_test, y_pred = predict_proba_case('binary', read_and_clean_titanic_data)
@@ -67,14 +67,14 @@ class TestKerasClassifier(unittest.TestCase):
         self.assertEquals(len(y_test), len(y_pred))
         self.assertTrue(roc_auc_score(y_test, y_pred) > 0.5)
 
-        print('Roc-Auc: {}'.format(roc_auc_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
+        logging.getLogger().info('Roc-Auc: {}'.format(roc_auc_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
 
     def test_keras_multi_classification_predict(self):
         y_test, y_pred = predict_case('multi', read_and_clean_thyroid_data)
 
         self.assertEquals(len(y_test), len(y_pred))
 
-        print('Accuracy: {}'.format(accuracy_score(np.argmax(y_test, 1), y_pred)))
+        logging.getLogger().info('Accuracy: {}'.format(accuracy_score(np.argmax(y_test, 1), y_pred)))
 
     def test_keras_multi_classification_predict_proba(self):
         y_test, y_pred = predict_proba_case('multi', read_and_clean_thyroid_data)
@@ -82,4 +82,4 @@ class TestKerasClassifier(unittest.TestCase):
         self.assertEquals(len(y_test), len(y_pred))
         self.assertTrue(roc_auc_score(y_test, y_pred) > 0.5)
 
-        print('Roc-Auc: {}'.format(roc_auc_score(y_test, y_pred)))
+        logging.getLogger().info('Roc-Auc: {}'.format(roc_auc_score(y_test, y_pred)))
