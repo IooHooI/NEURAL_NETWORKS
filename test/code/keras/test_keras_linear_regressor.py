@@ -6,6 +6,14 @@ from sklearn.metrics import r2_score
 from source.code.keras.keraslinearregressor import KerasLinearRegressor
 from source.code.preprocessing.dataloader import read_and_clean_boston_data
 from source.code.preprocessing.utils import create_sub_folders
+import logging
+import sys
+
+
+logger = logging.getLogger()
+logger.level = logging.DEBUG
+stream_handler = logging.StreamHandler(sys.stdout)
+logger.addHandler(stream_handler)
 
 
 def fit_the_network(data_loader_function):
@@ -36,4 +44,4 @@ class TestKerasLinearRegressor(unittest.TestCase):
 
         self.assertEquals(len(y_test), len(y_pred))
 
-        print('R2-Score: {}'.format(r2_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))
+        logging.getLogger().info('R2-Score: {}'.format(r2_score(y_test[:, 0].tolist(), y_pred[:, 0].tolist())))

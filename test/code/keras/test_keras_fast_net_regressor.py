@@ -7,6 +7,15 @@ from source.code.keras.kerasfastnetregressor import KerasFastTextRegressor
 from source.code.preprocessing.dataloader import read_and_clean_feedback_data
 from source.code.preprocessing.utils import create_sub_folders
 
+import logging
+import sys
+
+
+logger = logging.getLogger()
+logger.level = logging.DEBUG
+stream_handler = logging.StreamHandler(sys.stdout)
+logger.addHandler(stream_handler)
+
 
 def fit_the_network(data_loader_function):
     X, y = data_loader_function()
@@ -38,4 +47,4 @@ class TestKerasFastNetRegressor(unittest.TestCase):
 
         self.assertEquals(len(y_test), len(y_pred))
 
-        print('R2-Score: {}'.format(r2_score(y_test, y_pred)))
+        logging.getLogger().info('R2-Score: {}'.format(r2_score(y_test, y_pred)))
