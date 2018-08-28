@@ -37,10 +37,6 @@ def predict_case(data_loader_function):
 
 class TestKerasRNNRegressor(unittest.TestCase):
 
-    def setUp(self):
-        self.logger = logging.getLogger()
-        self.logger.setLevel(logging.INFO)
-
     def test_keras_rnn_regression_predict(self):
         y_test, y_pred = predict_case(read_and_clean_feedback_data)
 

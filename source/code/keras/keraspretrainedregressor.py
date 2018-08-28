@@ -1,8 +1,4 @@
 from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Embedding
-from keras.optimizers import Adam
-from keras.layers import GlobalAveragePooling1D
 
 from sklearn.base import BaseEstimator, ClassifierMixin
 
@@ -31,14 +27,10 @@ class KerasPreTrainedRegressor(BaseEstimator, ClassifierMixin):
         self.checkpoint_dir = checkpoint_dir
 
     def __build_the_graph(self, max_features, embedding_dims):
-        self.model.add(Embedding(max_features, 128, input_length=embedding_dims))
-        self.model.add(GlobalAveragePooling1D())
-        self.model.add(Dense(1, activation='linear'))
-        self.model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate))
+        pass
 
     def __prepare_the_data(self, X):
-        model_path = '../../../data/dataset/ruwikiruscorpora-nobigrams_upos_skipgram_300_5_2018.vec.gz'
-        model = gensim.models.KeyedVectors.load_word2vec_format(model_path, binary=False)
+        pass
 
     def fit(self, X, y=None):
         X = self.__prepare_the_data(X)

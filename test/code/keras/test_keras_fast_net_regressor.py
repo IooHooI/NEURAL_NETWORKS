@@ -38,10 +38,6 @@ def predict_case(data_loader_function):
 
 class TestKerasFastNetRegressor(unittest.TestCase):
 
-    def setUp(self):
-        self.logger = logging.getLogger()
-        self.logger.setLevel(logging.INFO)
-
     def test_keras_fast_net_regression_predict(self):
         y_test, y_pred = predict_case(read_and_clean_feedback_data)
 
