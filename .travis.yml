@@ -48,10 +48,10 @@ jobs:
       language: python
       python: 3.6
       script:
-        - echo "TBD"
-        - echo "TBD"
+        - cd test/code/keras
+        - pytest test_keras_pretrained_regressor.py
     - stage: extented_task
-      name: "Extended task"
+      name: "Test Keras image convolutional NN"
       language: python
       python: 3.6
       script:

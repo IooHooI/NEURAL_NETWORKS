@@ -25,6 +25,10 @@ class KerasClassifier(KerasBaseEstimator):
         else:
             self.__build_for_multi_classification(input_shape, output_shape)
 
+    def fit(self, X, y=None):
+        self.build_the_graph(X.shape[1], y.shape[1])
+        super().fit(X, y.reshape(len(y), 1))
+
     def predict(self, X, y=None):
         y_proba = self.model.predict(X, batch_size=self.batch_size, verbose=1)
         if self.classification == 'binary':

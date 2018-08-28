@@ -16,7 +16,6 @@ class KerasBaseEstimator(BaseEstimator):
         self.n_epochs = n_epochs
 
     def fit(self, X, y=None):
-        self.build_the_graph(X.shape[1], y.shape[1])
         self.model.fit(
             x=X,
             y=y,
