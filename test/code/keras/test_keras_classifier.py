@@ -15,13 +15,11 @@ import sys
 
 logger = logging.getLogger()
 logger.level = logging.DEBUG
+stream_handler = logging.StreamHandler(sys.stdout)
+logger.addHandler(stream_handler)
 
 
 def fit_the_network(classification, data_loader_function):
-    stream_handler = logging.StreamHandler(sys.stdout)
-
-    logger.addHandler(stream_handler)
-
     X, y = data_loader_function()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42, stratify=y)
     create_sub_folders('../../../data/dataset/keras_model')
@@ -29,7 +27,7 @@ def fit_the_network(classification, data_loader_function):
         checkpoint_dir='../../../data/dataset/keras_model/model.h5',
         classification=classification,
         n_epochs=1060,
-        learning_rate=0.001
+        lr=0.001
     )
 
     classifier.fit(X_train, y_train)

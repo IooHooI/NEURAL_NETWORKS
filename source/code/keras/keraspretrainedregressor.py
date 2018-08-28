@@ -1,5 +1,3 @@
-from keras.callbacks import EarlyStopping
-from keras.callbacks import ModelCheckpoint
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Embedding
@@ -44,26 +42,10 @@ class KerasPreTrainedRegressor(BaseEstimator, ClassifierMixin):
 
     def fit(self, X, y=None):
         X = self.__prepare_the_data(X)
-        self.__build_the_graph(self.max_features, self.embedding_dims)
-        self.model.fit(
-            x=X,
-            y=y,
-            batch_size=self.batch_size,
-            epochs=self.n_epochs,
-            validation_split=0.3,
-            callbacks=[
-                ModelCheckpoint(
-                    filepath=self.checkpoint_dir,
-                    save_best_only=True,
-                    verbose=1
-                ),
-                EarlyStopping(
-                    patience=3,
-                    verbose=1
-                )
-            ]
-        )
 
     def predict(self, X, y=None):
         X = self.__prepare_the_data(X)
         return self.model.predict(X, batch_size=self.batch_size, verbose=1)
+
+    def predict_proba(self, X, y=None):
+        raise NotImplementedError("This method is not implemented for this algorithm")

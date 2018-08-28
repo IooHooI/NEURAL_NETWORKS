@@ -28,7 +28,7 @@ jobs:
       python: 3.6
       script:
       - cd test/code/keras
-      - pytest test_keras_regressor.py
+      - pytest test_keras_linear_regressor.py
     - stage: main_task
       name: "Test Keras RNN"
       language: python

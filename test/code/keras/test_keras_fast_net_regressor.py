@@ -3,7 +3,7 @@ import unittest
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 
-from source.code.keras.kerasfastnet import KerasFastTextRegressor
+from source.code.keras.kerasfastnetregressor import KerasFastTextRegressor
 from source.code.preprocessing.dataloader import read_and_clean_feedback_data
 from source.code.preprocessing.utils import create_sub_folders
 
@@ -13,7 +13,7 @@ def fit_the_network(data_loader_function):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
     create_sub_folders('../../../data/dataset/keras_model')
     classifier = KerasFastTextRegressor(
-        checkpoint_dir='../../../data/dataset/keras_model/model.h5'
+        chkpt_dir='../../../data/dataset/keras_model/model.h5'
     )
     classifier.fit(X_train, y_train)
     return classifier, X_test, y_test

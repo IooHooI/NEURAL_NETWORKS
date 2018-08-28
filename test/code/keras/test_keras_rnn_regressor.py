@@ -3,7 +3,7 @@ import unittest
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 
-from source.code.keras.kerasrnn import KerasRNNRegressor
+from source.code.keras.kerasrnnregressor import KerasRNNRegressor
 from source.code.preprocessing.dataloader import read_and_clean_feedback_data
 from source.code.preprocessing.utils import create_sub_folders
 
