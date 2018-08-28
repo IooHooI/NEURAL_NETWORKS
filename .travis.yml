@@ -1,57 +1,57 @@
 jobs:
   include:
-    - stage: absolute_minimum
-      name: "Test data loader"
+    - stage: testing
+      name: "Absolute minimum: Part I: Test data loader"
       language: python
       python: 3.6
       script:
         - cd test/code/preprocessing
         - pytest test_data_loader.py
         - cd ../../..
-    - stage: absolute_minimum
-      name: "Test TensorFlow classifier"
+    - stage: testing
+      name: "Absolute minimum: Part II: Test TensorFlow classifier"
       language: python
       python: 3.6
       script:
         - cd test/code/tensorflow
         - pytest test_tf_classifier.py
-    - stage: absolute_minimum
-      name: "Test Keras classifier"
+    - stage: testing
+      name: "Absolute minimum: Part III: Test Keras classifier"
       language: python
       python: 3.6
       script:
         - cd test/code/keras
         - pytest test_keras_classifier.py
-    - stage: absolute_minimum
-      name: "Test Keras regressor"
+    - stage: testing
+      name: "Absolute minimum: Part IV: Test Keras regressor"
       language: python
       python: 3.6
       script:
       - cd test/code/keras
       - pytest test_keras_linear_regressor.py
-    - stage: main_task
-      name: "Test Keras RNN"
+    - stage: testing
+      name: "Main task: Part I: Test Keras RNN"
       language: python
       python: 3.6
       script:
         - cd test/code/keras
         - pytest test_keras_rnn_regressor.py
-    - stage: main_task
-      name: "Test Keras FastText NN"
+    - stage: testing
+      name: "Main task: Part II: Test Keras FastText NN"
       language: python
       python: 3.6
       script:
         - cd test/code/keras
         - pytest test_keras_fast_net_regressor.py
-    - stage: main_task
-      name: "Test Keras NN with pre-trained W2V"
+    - stage: testing
+      name: "Main task: Part III: Test Keras NN with pre-trained W2V"
       language: python
       python: 3.6
       script:
         - cd test/code/keras
         - pytest test_keras_pretrained_regressor.py
-    - stage: extented_task
-      name: "Test Keras image convolutional NN"
+    - stage: testing
+      name: "Extended task: Part I: Test Keras image convolutional NN"
       language: python
       python: 3.6
       script:
