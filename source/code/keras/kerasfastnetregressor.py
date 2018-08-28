@@ -49,7 +49,7 @@ class KerasFastTextRegressor(KerasBaseEstimator):
     def fit(self, X, y=None):
         X, max_features = self.__prepare_the_data(X)
         self.model.add(Embedding(max_features, 128, input_length=self.embedding_dims))
-        self.build_the_graph(X.shape[1], y.reshape(len(y), 1))
+        self.build_the_graph(X.shape[1], y.reshape(len(y), 1).shape[1])
         super().fit(X, y.reshape(len(y), 1))
 
     def predict(self, X, y=None):

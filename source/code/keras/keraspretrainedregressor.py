@@ -40,7 +40,7 @@ class KerasPreTrainedRegressor(KerasBaseEstimator):
         self.model.add(Input())
         self.model.add(Embedding())
 
-        self.build_the_graph(X.shape[1], y.reshape(len(y), 1))
+        self.build_the_graph(X.shape[1], y.reshape(len(y), 1).shape[1])
 
         super().fit(X, y.reshape(len(y), 1))
 

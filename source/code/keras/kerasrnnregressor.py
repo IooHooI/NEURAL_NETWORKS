@@ -1,6 +1,6 @@
 from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
 from keras.optimizers import Adam
-from keras.preprocessing.text import one_hot
+from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 
 from .kerasbaseestimator import KerasBaseEstimator
@@ -12,6 +12,7 @@ class KerasRNNRegressor(KerasBaseEstimator):
         super().__init__(checkpoint_dir, lr, batch_size, n_epochs)
         self.maxlen = maxlen
         self.max_features = max_features
+        self.tokenizer = Tokenizer(num_words=self.max_features)
 
     def build_the_graph(self, input_shape, output_shape):
         self.model.add(Bidirectional(LSTM(64)))
@@ -19,20 +20,21 @@ class KerasRNNRegressor(KerasBaseEstimator):
         self.model.add(Dense(output_shape, activation='linear', kernel_initializer='normal'))
         self.model.compile(loss='mean_squared_error', optimizer=Adam(lr=self.learning_rate))
 
-    def __prepare_the_data(self, X):
-        encoded_docs = [one_hot(' '.join(d), self.max_features) for d in X]
-        padded_docs = pad_sequences(encoded_docs, maxlen=self.maxlen, padding='post')
-        return padded_docs
-
     def fit(self, X, y=None):
-        X = self.__prepare_the_data(X)
+        self.tokenizer.fit_on_texts([' '.join(d) for d in X])
+        encoded_docs = self.tokenizer.texts_to_sequences([' '.join(d) for d in X])
+        padded_docs = pad_sequences(encoded_docs, maxlen=self.maxlen, padding='post')
+
         self.model.add(Embedding(self.max_features, 128, input_length=self.maxlen))
-        self.build_the_graph(X.shape[1], y.reshape(len(y), 1))
-        super().fit(X, y.reshape(len(y), 1))
+        self.build_the_graph(padded_docs.shape[1], y.reshape(len(y), 1).shape[1])
+
+        super().fit(padded_docs, y.reshape(len(y), 1))
 
     def predict(self, X, y=None):
-        X = self.__prepare_the_data(X)
-        return self.model.predict(X, batch_size=self.batch_size, verbose=1)
+        encoded_docs = self.tokenizer.texts_to_sequences([' '.join(d) for d in X])
+        padded_docs = pad_sequences(encoded_docs, maxlen=self.maxlen, padding='post')
+
+        return self.model.predict(padded_docs, batch_size=self.batch_size, verbose=1)
 
     def predict_proba(self, X, y=None):
         raise NotImplementedError("This method is not implemented for this algorithm")
