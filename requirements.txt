@@ -22,3 +22,4 @@ requests==2.19.1
 keras==2.2.2
 pymystem3==0.2.0
 gensim==3.5.0
+Pillow==4.1.0

@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
 
-from source.code.keras.kerasclassifier import KerasClassifier
+from source.code.keras.keraslinearclassifier import KerasLinearClassifier
 from source.code.preprocessing.dataloader import read_and_clean_thyroid_data
 from source.code.preprocessing.dataloader import read_and_clean_titanic_data
 from source.code.preprocessing.utils import create_sub_folders
@@ -23,7 +23,7 @@ def fit_the_network(classification, data_loader_function):
     X, y = data_loader_function()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42, stratify=y)
     create_sub_folders('../../../data/dataset/keras_model')
-    classifier = KerasClassifier(
+    classifier = KerasLinearClassifier(
         checkpoint_dir='../../../data/dataset/keras_model/model.h5',
         classification=classification,
         n_epochs=1060,
@@ -50,7 +50,7 @@ def predict_proba_case(classification, data_loader_function):
     return y_test, y_pred
 
 
-class TestKerasClassifier(unittest.TestCase):
+class TestKerasLinearClassifier(unittest.TestCase):
 
     def test_keras_binary_classification_predict(self):
         y_test, y_pred = predict_case('binary', read_and_clean_titanic_data)

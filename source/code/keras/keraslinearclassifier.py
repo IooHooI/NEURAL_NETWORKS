@@ -5,7 +5,7 @@ from keras.optimizers import Adam
 from .kerasbaseestimator import KerasBaseEstimator
 
 
-class KerasClassifier(KerasBaseEstimator):
+class KerasLinearClassifier(KerasBaseEstimator):
 
     def __init__(self, checkpoint_dir='./', classification='binary', lr=0.01, batch_size=128, n_epochs=30):
         super().__init__(checkpoint_dir, lr, batch_size, n_epochs)

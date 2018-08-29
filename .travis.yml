@@ -21,7 +21,7 @@ jobs:
       python: 3.6
       script:
         - cd test/code/keras
-        - pytest test_keras_classifier.py
+        - pytest test_keras_linear_classifier.py
     - stage: testing
       name: "Absolute minimum: Part IV: Test Keras regressor"
       language: python
